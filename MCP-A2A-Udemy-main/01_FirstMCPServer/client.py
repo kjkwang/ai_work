@@ -18,6 +18,6 @@ async def main():
             result = await session.call_tool("add", {"a": 21, "b": 21})
             print("Server result:", result)
 
-
+#
 if __name__ == "__main__":
     asyncio.run(main())
