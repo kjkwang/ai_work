@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  furniture_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.furniture
+    env_file:
+      - .env  
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  api_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    env_file:
+      - .env  
+    depends_on:
+      - furniture_server
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - api_server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

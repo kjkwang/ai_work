@@ -1,0 +1,7 @@
+JSON_RCP.md
+.venv
+.env
+docs.md
+.ruff_cache
+__pycache__
+order.md

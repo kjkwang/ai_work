@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+mcp_a2a_udemy.egg-info/PKG-INFO
+mcp_a2a_udemy.egg-info/SOURCES.txt
+mcp_a2a_udemy.egg-info/dependency_links.txt
+mcp_a2a_udemy.egg-info/requires.txt
+mcp_a2a_udemy.egg-info/top_level.txt

@@ -1,0 +1,31 @@
+from fastmcp import FastMCP
+from fastmcp.server.middleware import Middleware, MiddlewareContext
+
+mcp = FastMCP(name="TagFilterDemo")
+
+class TagFilteringMiddleware(Middleware):
+    async def on_list_tools(self, context: MiddlewareContext, call_next):
+        tools = await call_next(context)
+        qp = context.fastmcp_context.request_context.request.query_params
+        q = qp.get("tags")
+        if not q:
+            return tools
+        tags = {t.strip() for t in q.split(",") if t.strip()}
+        return [t for t in tools if tags & t.tags]
+
+mcp.add_middleware(TagFilteringMiddleware())
+
+@mcp.tool(tags={"math"})
+def add(a: int, b: int) -> int:
+    return a + b
+
+@mcp.tool(tags={"search"})
+def search(item: str):
+    db1 = {
+        "iphone_15_pro_128gb": {"name": "Apple iPhone 15 Pro (128GB)", "price_usd": 999},
+        "ps5_slim": {"name": "Sony PlayStation 5 Slim", "price_usd": 499},
+    }
+    return db1.get(item) or "Item not found"
+
+if __name__ == "__main__":
+    mcp.run(transport="http", host="127.0.0.1")
